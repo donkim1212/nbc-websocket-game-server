@@ -13,8 +13,6 @@
 **/*.env
 node_modules
 .vscode/*
-public
-public/**
 
 # Exceptions
 !package-lock.json
