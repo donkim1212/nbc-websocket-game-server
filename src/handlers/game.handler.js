@@ -1,11 +1,11 @@
 import { getGameAssets } from "../init/assets.js";
-import { getStage, setStage } from "../models/stage.model.js";
+import { getStage, setStage, clearStage } from "../models/stage.model.js";
 
 export const gameStart = (uuid, payload) => {
   const { stages } = getGameAssets();
-
+  clearStage(uuid);
   setStage(uuid, stages.data[0].id, payload.timestamp);
-  console.log("Stage: ", getStage(uuid));
+  console.log("Stage:", getStage(uuid));
 
   return { status: "success" };
 };

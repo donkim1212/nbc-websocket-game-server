@@ -18,7 +18,7 @@ export const moveStageHandler = (userId, payload) => {
   const elapsedTime = (serverTime - currentStage.timestamp) / 1000;
 
   // 점수 미달 혹은 지연시간 초과 체크, 5는 임의로 정한 숫자
-  if (elapsedTime < 100 || elapsedTime > 105) {
+  if (elapsedTime < 10 || elapsedTime > 10.5) {
     return { status: "fail", message: "Invalid elapsed time." };
   }
 
