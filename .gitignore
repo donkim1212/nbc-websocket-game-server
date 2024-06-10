@@ -8,10 +8,13 @@
 # Should be ignored
 **/*.png
 **/*.jpg
+**/*.gif
 **/*.txt
 **/*.env
 node_modules
 .vscode/*
+public
+public/**
 
 # Exceptions
 !package-lock.json
