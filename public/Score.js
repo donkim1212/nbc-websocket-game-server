@@ -4,6 +4,8 @@ class Score {
   score = 0;
   HIGH_SCORE_KEY = "highScore";
   scoreRequiredToAdvance = 100;
+  scoresPerSecond = 1;
+  stageId = 1000;
 
   constructor(ctx, scaleRatio) {
     this.ctx = ctx;
@@ -12,11 +14,12 @@ class Score {
   }
 
   update(deltaTime) {
-    this.score += deltaTime * 0.001;
-    // 점수가 100점 이상이 될 시 서버에 메세지 전송
-    if (Math.floor(this.score) === this.scoreRequiredToAdvance && this.stageChange) {
+    this.score += deltaTime * 0.001 * this.scoresPerSecond;
+    // 점수 만족 시 서버에 메세지 전송
+    if (this.score >= this.scoreRequiredToAdvance && this.stageChange) {
       this.stageChange = false;
-      sendEvent(11, { currentStage: 1000, targetStage: 1001 });
+      // console.log("NEXT STAGE EVENT SENT");
+      sendEvent(11, { currentStage: this.stageId, score: this.score });
     }
   }
 
@@ -46,6 +49,13 @@ class Score {
 
   addScore(scoreToAdd) {
     this.score += +scoreToAdd;
+  }
+
+  setNextStage(stageId, targetScore, scoresPerSecond) {
+    this.stageId = stageId;
+    this.scoreRequiredToAdvance = targetScore;
+    this.scoresPerSecond = scoresPerSecond;
+    this.stageChange = true;
   }
 
   draw() {
