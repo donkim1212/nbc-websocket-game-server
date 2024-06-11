@@ -32,7 +32,7 @@ export const moveStageHandler = (userId, payload) => {
   // }
   if (
     estimatedDeltaScore < expectedDeltaScore ||
-    expectedDeltaScore > estimatedDeltaScore + SCORE_ERROR_TOLERANCE * scoresPerSecond
+    estimatedDeltaScore > expectedDeltaScore + SCORE_ERROR_TOLERANCE * scoresPerSecond
   ) {
     return { status: "fail", message: "Invalid elapsed time." };
   }
