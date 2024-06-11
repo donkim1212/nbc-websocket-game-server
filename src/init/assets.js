@@ -37,3 +37,15 @@ export const getItemScore = (itemId) => {
   if (index === -1) return index;
   return gameAssets.items.data[index].score;
 };
+
+export const getStageData = (stageId) => {
+  const index = gameAssets.stages.data.findIndex((data) => stageId === data.id);
+  if (index === -1) return index;
+  return gameAssets.stages.data[index];
+};
+
+export const getScoresPerSecond = (stageId) => {
+  const index = gameAssets.stages.data.findIndex((data) => stageId === data.id);
+  if (index === -1) return index;
+  return gameAssets.stages.data[index].scoresPerSecond;
+};
