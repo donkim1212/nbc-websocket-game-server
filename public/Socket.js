@@ -1,4 +1,7 @@
 import { CLIENT_VERSION } from "./Constants.js";
+import { handleResponse } from "./handlers/helper.js";
+
+// const jobQueue = [];
 
 const socket = io("http://localhost:3000", {
   query: {
@@ -8,6 +11,8 @@ const socket = io("http://localhost:3000", {
 
 let userId = null;
 socket.on("response", (data) => {
+  // pushEventData(data);
+  if (data.handlerId) handleResponse(data);
   console.log(data);
 });
 
@@ -24,5 +29,16 @@ const sendEvent = (handlerId, payload) => {
     payload,
   });
 };
+
+// make a job queue?
+// export this for index.js to poll data from job queue
+// const pushEventData = (data) => {
+//   const { status, message, ...keys } = data;
+//   jobQueue.push(...keys);
+// };
+
+// const pollFromJobQueue = () => {
+//   return jobQueue.shift();
+// };
 
 export { sendEvent };
