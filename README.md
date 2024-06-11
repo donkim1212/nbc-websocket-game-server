@@ -148,6 +148,37 @@
 
 <br>
 
+- 스테이지 이동 payload (handlerId: 11)
+
+<table>
+<tr>
+<td>필드 명</td>
+<td>타입</td>
+<td>설명</td>
+</tr>
+
+<tr>
+<td>id</td>
+<td>int</td>
+<td>이동하는 스테이지의 id</td>
+</tr>
+
+<tr>
+<td>scoresPerSecond</td>
+<td>int</td>
+<td>이동하는 스테이지에서 초당 획득하는 점수</td>
+</tr>
+
+<tr>
+<td>targetScore</td>
+<td>int</td>
+<td>이동하는 스테이지에서 그 다음 스테이지로 이동하기 위한 요구 점수</td>
+</tr>
+
+</table>
+
+<br>
+
 - 아이템 획득 payload (handlerId: 15)
 
 <table>
