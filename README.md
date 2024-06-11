@@ -37,7 +37,6 @@
 </table>
 
 <br>
-<br>
 
 - 스테이지 이동
 
@@ -59,12 +58,17 @@
 <td>int</td>
 <td>이동하는 스테이지</td>
 </tr>
+
+<tr>
+<td>score</td>
+<td>int</td>
+<td>현재 점수</td>
+</tr>
 </table>
 
 <br>
-<br>
 
-- 아이템 획득
+- 아이템 획득 (handlerId: 15)
 
 <table>
 <tr>
@@ -80,9 +84,11 @@
 </tr>
 </table>
 
+<br>
+<br>
+
 ---
 
-<br>
 <br>
 <br>
 
@@ -107,12 +113,23 @@
 <td>성공 혹은 실패 원인에 대한 부연 설명</td>
 </tr>
 
+<tr>
+<td>handlerId</td>
+<td>int</td>
+<td>status가 'success'일 때 서버에 요청한 handlerId와 동일한 Id 반환</td>
+</tr>
+
+<tr>
+<td>payload</td>
+<td>JSON</td>
+<td>status가 'success'일 때 게임 상태 업데이트를 위해 필요한 정보가 담긴 객체</td>
+</tr>
+
 </table>
 
 <br>
-<br>
 
-- 아이템 획득 (서버)
+- 게임 오버 payload (handlerId: 3)
 
 <table>
 <tr>
@@ -122,13 +139,26 @@
 </tr>
 
 <tr>
-<td>handlerId</td>
+<td>score</td>
 <td>int</td>
-<td>서버에 요청한 handlerId와 동일한 Id 반환</td>
+<td>최종 점수</td>
+</tr>
+
+</table>
+
+<br>
+
+- 아이템 획득 payload (handlerId: 15)
+
+<table>
+<tr>
+<td>필드 명</td>
+<td>타입</td>
+<td>설명</td>
 </tr>
 
 <tr>
-<td>itemScore</td>
+<td>score</td>
 <td>int</td>
 <td>획득한 아이템이 주는 점수</td>
 </tr>
