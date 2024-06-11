@@ -116,13 +116,13 @@
 <tr>
 <td>handlerId</td>
 <td>int</td>
-<td>status가 'success'일 때 서버에 요청한 handlerId와 동일한 Id 반환</td>
+<td>(payload가 존재할 때) 서버에 요청한 handlerId와 동일한 Id 반환</td>
 </tr>
 
 <tr>
 <td>payload</td>
 <td>JSON</td>
-<td>status가 'success'일 때 게임 상태 업데이트를 위해 필요한 정보가 담긴 객체</td>
+<td>(상태 변경이 필요할 때) 게임 상태 업데이트를 위해 필요한 정보가 담긴 객체</td>
 </tr>
 
 </table>
