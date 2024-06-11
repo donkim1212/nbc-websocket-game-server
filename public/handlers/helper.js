@@ -1,4 +1,4 @@
-import { handlerMapping, targetMappings } from "./handlerMapping.js";
+import { handlerMapping, targetMapping } from "./handlerMapping.js";
 
 export const handleResponse = (data) => {
   const { handlerId, payload } = data;
