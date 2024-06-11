@@ -37,5 +37,5 @@ export const gameEnd = (uuid, payload) => {
 
   // DB가 있다면 여기서 저장
 
-  return { status: "success", message: "Game ended", score };
+  return { status: "success", message: "Game ended", payload: { score } };
 };

@@ -1,6 +1,9 @@
+import { sendEvent } from "./Socket.js";
+
 class Score {
   score = 0;
   HIGH_SCORE_KEY = "highScore";
+  scoreRequiredToAdvance = 100;
 
   constructor(ctx, scaleRatio) {
     this.ctx = ctx;
@@ -11,14 +14,15 @@ class Score {
   update(deltaTime) {
     this.score += deltaTime * 0.001;
     // 점수가 100점 이상이 될 시 서버에 메세지 전송
-    if (Math.floor(this.score) === 100 && this.stageChange) {
+    if (Math.floor(this.score) === this.scoreRequiredToAdvance && this.stageChange) {
       this.stageChange = false;
       sendEvent(11, { currentStage: 1000, targetStage: 1001 });
     }
   }
 
   getItem(itemId) {
-    this.score += 0;
+    sendEvent(15, { itemId });
+    // this.score += 0;
   }
 
   reset() {
@@ -34,6 +38,14 @@ class Score {
 
   getScore() {
     return this.score;
+  }
+
+  setScore(score) {
+    this.score = +score;
+  }
+
+  addScore(scoreToAdd) {
+    this.score += +scoreToAdd;
   }
 
   draw() {

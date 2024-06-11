@@ -47,7 +47,7 @@ let player = null;
 let ground = null;
 let cactiController = null;
 let itemController = null;
-let score = null;
+export let score = null;
 
 let scaleRatio = null;
 let previousTime = null;

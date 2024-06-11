@@ -31,3 +31,9 @@ export const loadGameAssets = async () => {
 export const getGameAssets = () => {
   return gameAssets;
 };
+
+export const getItemScore = (itemId) => {
+  const index = gameAssets.items.data.findIndex((data) => itemId === data.id);
+  if (index === -1) return index;
+  return gameAssets.items.data[index].score;
+};
