@@ -1,5 +1,5 @@
-import { getGameAssets, getStageData } from "../init/assets.js";
-import { setStage, getStage } from "../models/stage.model.js";
+import { getUnlockedItemIdByStageId } from "../init/assets.js";
+import { setStage } from "../models/stage.model.js";
 import gsv from "../libs/verifiers/game-state.verifier.js";
 
 export const moveStageHandler = (userId, payload) => {
@@ -14,8 +14,11 @@ export const moveStageHandler = (userId, payload) => {
 
   setStage(userId, nextStage.id, Date.now(), deltaScore);
 
-  const temp = getStageData(nextStage.id + 1);
-  const targetScore = !temp ? Number.MAX_VALUE : temp.score;
+  // const temp = getStageData(nextStage.id + 1);
+  // const targetScore = !temp ? Number.MAX_VALUE : temp.score;
+
+  const targetScore = currentStage.score;
+  const unlockedId = getUnlockedItemIdByStageId(nextStage.id);
 
   return {
     status: "success",
@@ -24,6 +27,7 @@ export const moveStageHandler = (userId, payload) => {
       id: nextStage.id,
       scoresPerSecond: nextStage.scoresPerSecond,
       targetScore: targetScore,
+      unlockedItemId: unlockedId,
     },
   };
 };
