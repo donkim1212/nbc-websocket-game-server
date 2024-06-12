@@ -38,15 +38,7 @@ class ItemController {
     const x = this.canvas.width * 1.5;
     const y = this.getRandomNumber(10, this.canvas.height - itemInfo.height);
 
-    const item = new Item(
-      this.ctx,
-      selectedId,
-      x,
-      y,
-      itemInfo.width,
-      itemInfo.height,
-      itemInfo.image,
-    );
+    const item = new Item(this.ctx, itemId, x, y, itemInfo.width, itemInfo.height, itemInfo.image);
 
     this.items.push(item);
   }
