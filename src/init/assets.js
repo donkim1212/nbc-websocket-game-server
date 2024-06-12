@@ -57,6 +57,10 @@ export const getItemUnlockStage = (itemId) => {
   return gameAssets.stages.data[index];
 };
 
+export const getItemUnlockStageId = (itemId) => {
+  return getItemUnlockStage(itemId).id;
+};
+
 export const getUnlockedItemIdByStageId = (stageId) => {
   const itemUnlockIndex = gameAssets.itemUnlocks.data.findIndex(
     (data) => data.stage_id === stageId,

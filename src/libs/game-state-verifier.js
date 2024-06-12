@@ -1,7 +1,12 @@
-import { getGameAssets, getItemData, getItemUnlockStage, getStageData } from "../init/assets.js";
+import {
+  getItemData,
+  getItemUnlockStage,
+  getItemUnlockStageId,
+  getStageData,
+} from "../init/assets.js";
 import { SCORE_ERROR_TOLERANCE } from "../constants.js";
 import { getCurrentStage, getStage } from "../models/stage.model.js";
-import { getUserItemScore, getUserItemUnlocked } from "../models/item.model.js";
+import { getUserItemScore } from "../models/item.model.js";
 import InvalidStageError from "./errors/classes/invalid-stage.error.js";
 
 const gameStateVerifier = {
@@ -73,9 +78,15 @@ const gameStateVerifier = {
 
   userObtainedItemVerification: function (userId, itemId) {
     const item = this.itemVerifier(itemId);
-    const unlocked = getUserItemUnlocked(userId);
-    if (!unlocked || unlocked.length === 0) throw new Error("User items not initialized.");
-    if (!unlocked.includes(item.id)) throw new Error("Item not unlocked yet.");
+
+    // find item's unlock stage using getItemUnlockStage(itemId)
+    const unlocksAt = getItemUnlockStageId(item.id);
+    // use getStage(userId) to get user's stages
+    const stages = getStage(userId);
+    // check if the user's stages contain unlock stage
+    const index = stages.findIndex((stage) => stage.id === unlocksAt);
+    if (index === -1) throw new Error("Invalid item acquisition detected.");
+
     return item;
   },
 };

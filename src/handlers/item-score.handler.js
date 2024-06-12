@@ -1,10 +1,12 @@
 import { getGameAssets, getItemScore } from "../init/assets.js";
 import { getStage } from "../models/stage.model.js";
 import { addUserItemTotal } from "../models/item.model.js";
+import gsv from "../libs/game-state-verifier.js";
 
 // Verify item, returns its score
 export const itemScoreHandler = (userId, payload) => {
   const { itemId } = payload;
+  gsv.userObtainedItemVerification(userId, itemId);
   const currentStage = getStage(userId);
   const gameAssets = getGameAssets();
   // TODO: abuse detection as an async function?
