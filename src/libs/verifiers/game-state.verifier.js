@@ -38,6 +38,7 @@ const gameStateVerifier = {
       throw new Error("Score verification failed.");
     }
 
+    // check if user played valid amount of time
     const serverTime = Date.now();
     const elapsedTime = (serverTime - currentStage.timestamp) / 1000;
     const itemScore = getUserItemScores(userId);
