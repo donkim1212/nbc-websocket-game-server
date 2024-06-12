@@ -30,7 +30,11 @@ class ItemController {
   createItem() {
     const index = this.getRandomNumber(0, this.unlockedItems.length - 1);
     const selectedId = this.unlockedItems[index];
-    const itemInfo = this.itemImages[selectedId];
+    this.createItemById(selectedId);
+  }
+
+  createItemById(itemId) {
+    const itemInfo = this.itemImages[itemId];
     const x = this.canvas.width * 1.5;
     const y = this.getRandomNumber(10, this.canvas.height - itemInfo.height);
 
