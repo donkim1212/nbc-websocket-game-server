@@ -1,6 +1,6 @@
 import { getUnlockedItemIdByStageId } from "../init/assets.js";
 import { setStage } from "../models/stage.model.js";
-import gsv from "../libs/verifiers/game-state.verifier.js";
+import gsv from "../libs/game-state-verifier.js";
 
 export const moveStageHandler = (userId, payload) => {
   // 유저의 현재 스테이지 정보 검증
@@ -14,10 +14,6 @@ export const moveStageHandler = (userId, payload) => {
 
   setStage(userId, nextStage.id, Date.now(), deltaScore);
 
-  // const temp = getStageData(nextStage.id + 1);
-  // const targetScore = !temp ? Number.MAX_VALUE : temp.score;
-
-  const targetScore = currentStage.score;
   const unlockedId = getUnlockedItemIdByStageId(nextStage.id);
 
   return {
@@ -26,7 +22,7 @@ export const moveStageHandler = (userId, payload) => {
     payload: {
       id: nextStage.id,
       scoresPerSecond: nextStage.scoresPerSecond,
-      targetScore: targetScore,
+      targetScore: nextStage.score,
       unlockedItemId: unlockedId,
     },
   };
