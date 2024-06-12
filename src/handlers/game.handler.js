@@ -12,7 +12,7 @@ export const gameStart = (uuid, payload) => {
     status: "success",
     payload: {
       id: stages.data[0].id,
-      targetScore: stages.data[1].score,
+      targetScore: stages.data[0].score,
       scoresPerSecond: stages.data[0].scoresPerSecond,
     },
   };
