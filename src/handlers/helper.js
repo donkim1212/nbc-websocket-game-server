@@ -46,7 +46,9 @@ export const handlerEvent = async (io, socket, data) => {
 
     socket.emit("response", response);
   } catch (err) {
-    // TODO: call errorHandler instead
+    // Disconnects user on error (which includes when invalid game data detected)
+    removeUserByUserId(data.userId);
+    clearGameData(data.userId);
     errorHandler(err, socket);
   }
 };
