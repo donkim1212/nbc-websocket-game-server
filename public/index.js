@@ -37,9 +37,11 @@ const CACTI_CONFIG = [
 // 아이템
 const ITEM_CONFIG = [
   { width: 50 / 1.5, height: 50 / 1.5, id: 1, image: "images/items/pokeball_red.png" },
-  { width: 50 / 1.5, height: 50 / 1.5, id: 2, image: "images/items/pokeball_yellow.png" },
-  { width: 50 / 1.5, height: 50 / 1.5, id: 3, image: "images/items/pokeball_purple.png" },
+  { width: 50 / 1.5, height: 50 / 1.5, id: 2, image: "images/items/pokeball_orange.png" },
+  { width: 50 / 1.5, height: 50 / 1.5, id: 3, image: "images/items/pokeball_yellow.png" },
   { width: 50 / 1.5, height: 50 / 1.5, id: 4, image: "images/items/pokeball_cyan.png" },
+  { width: 50 / 1.5, height: 50 / 1.5, id: 5, image: "images/items/pokeball_purple.png" },
+  { width: 50 / 1.5, height: 50 / 1.5, id: 6, image: "images/items/pokeball_pink.png" },
 ];
 
 // 게임 요소들
@@ -91,16 +93,28 @@ function createSprites() {
 
   cactiController = new CactiController(ctx, cactiImages, scaleRatio, GROUND_SPEED);
 
-  const itemImages = ITEM_CONFIG.map((item) => {
+  // const itemImages = ITEM_CONFIG.map((item) => {
+  //   const image = new Image();
+  //   image.src = item.image;
+  //   return {
+  //     image,
+  //     id: item.id,
+  //     width: item.width * scaleRatio,
+  //     height: item.height * scaleRatio,
+  //   };
+  // });
+
+  const itemImages = {};
+  for (let i in ITEM_CONFIG) {
+    const { id: itemId, image: itemImage, width, height } = ITEM_CONFIG[i];
     const image = new Image();
-    image.src = item.image;
-    return {
+    image.src = itemImage;
+    itemImages[itemId] = {
       image,
-      id: item.id,
-      width: item.width * scaleRatio,
-      height: item.height * scaleRatio,
+      width: width * scaleRatio,
+      height: height * scaleRatio,
     };
-  });
+  }
 
   itemController = new ItemController(ctx, itemImages, scaleRatio, GROUND_SPEED);
 
