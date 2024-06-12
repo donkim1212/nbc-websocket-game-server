@@ -48,8 +48,17 @@ export const getStageData = (stageId) => {
   return gameAssets.stages.data[index];
 };
 
+export const getItemUnlockStage = (itemId) => {
+  const itemUnlockIndex = gameAssets.itemUnlocks.data.findIndex((data) => data.item_id === itemId);
+  if (itemUnlockIndex === -1) return null;
+  const itemUnlockStageId = gameAssets.itemUnlocks.data[itemUnlockIndex].stage_id;
+  const index = gameAssets.stages.data.findIndex((data) => data.id === itemUnlockStageId);
+  if (index === -1) return null;
+  return gameAssets.stages.data[index];
+};
+
 export const getScoresPerSecond = (stageId) => {
   const index = gameAssets.stages.data.findIndex((data) => stageId === data.id);
-  if (index === -1) return index;
+  if (index === -1) return null;
   return gameAssets.stages.data[index].scoresPerSecond;
 };
