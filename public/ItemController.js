@@ -27,6 +27,14 @@ class ItemController {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
+  unlockItem(itemId) {
+    this.unlockedItems.push(itemId);
+  }
+
+  setUnlockedItems(unlockedItems) {
+    this.unlockedItems = unlockedItems;
+  }
+
   createItem() {
     const index = this.getRandomNumber(0, this.unlockedItems.length - 1);
     const selectedId = this.unlockedItems[index];
