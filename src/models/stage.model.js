@@ -20,3 +20,7 @@ export const setStage = (uuid, id, timestamp, prevScore) => {
 export const clearStage = (uuid) => {
   return (stages[uuid] = []);
 };
+
+export const removeStage = (uuid) => {
+  delete stages[uuid];
+};

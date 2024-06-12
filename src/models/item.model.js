@@ -28,3 +28,7 @@ export const addUserItemUnlocked = (userId, itemId) => {
 export const getUserItemUnlocked = (userId) => {
   return userItem[userId]?.unlocked;
 };
+
+export const removeUserItemData = (userId) => {
+  delete userItem[userId];
+};
