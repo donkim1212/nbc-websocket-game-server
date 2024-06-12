@@ -32,10 +32,14 @@ export const getGameAssets = () => {
   return gameAssets;
 };
 
-export const getItemScore = (itemId) => {
+export const getItemData = (itemId) => {
   const index = gameAssets.items.data.findIndex((data) => itemId === data.id);
-  if (index === -1) return index;
-  return gameAssets.items.data[index].score;
+  if (index === -1) return null;
+  return gameAssets.items.data[index];
+};
+
+export const getItemScore = (itemId) => {
+  return getItemData(itemId)?.score;
 };
 
 export const getStageData = (stageId) => {
