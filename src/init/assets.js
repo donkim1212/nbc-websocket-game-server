@@ -40,7 +40,7 @@ export const getItemScore = (itemId) => {
 
 export const getStageData = (stageId) => {
   const index = gameAssets.stages.data.findIndex((data) => stageId === data.id);
-  if (index === -1) return index;
+  if (index === -1) return null;
   return gameAssets.stages.data[index];
 };
 
