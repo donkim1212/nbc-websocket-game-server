@@ -1,8 +1,8 @@
-import { getGameAssets, getItemData, getItemUnlockStage, getStageData } from "../../init/assets.js";
-import { SCORE_ERROR_TOLERANCE } from "../../constants.js";
-import { getCurrentStage, getStage } from "../../models/stage.model.js";
-import { getUserItemScore, getUserItemUnlocked } from "../../models/item.model.js";
-import InvalidStageError from "../errors/classes/invalid-stage.error.js";
+import { getGameAssets, getItemData, getItemUnlockStage, getStageData } from "../init/assets.js";
+import { SCORE_ERROR_TOLERANCE } from "../constants.js";
+import { getCurrentStage, getStage } from "../models/stage.model.js";
+import { getUserItemScore, getUserItemUnlocked } from "../models/item.model.js";
+import InvalidStageError from "./errors/classes/invalid-stage.error.js";
 
 const gameStateVerifier = {
   stageVerification: function (stageId) {
