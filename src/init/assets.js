@@ -32,10 +32,14 @@ export const getGameAssets = () => {
   return gameAssets;
 };
 
-export const getItemScore = (itemId) => {
+export const getItemData = (itemId) => {
   const index = gameAssets.items.data.findIndex((data) => itemId === data.id);
-  if (index === -1) return index;
-  return gameAssets.items.data[index].score;
+  if (index === -1) return null;
+  return gameAssets.items.data[index];
+};
+
+export const getItemScore = (itemId) => {
+  return getItemData(itemId)?.score;
 };
 
 export const getStageData = (stageId) => {
@@ -44,8 +48,25 @@ export const getStageData = (stageId) => {
   return gameAssets.stages.data[index];
 };
 
+export const getItemUnlockStage = (itemId) => {
+  const itemUnlockIndex = gameAssets.itemUnlocks.data.findIndex((data) => data.item_id === itemId);
+  if (itemUnlockIndex === -1) return null;
+  const itemUnlockStageId = gameAssets.itemUnlocks.data[itemUnlockIndex].stage_id;
+  const index = gameAssets.stages.data.findIndex((data) => data.id === itemUnlockStageId);
+  if (index === -1) return null;
+  return gameAssets.stages.data[index];
+};
+
+export const getUnlockedItemIdByStageId = (stageId) => {
+  const itemUnlockIndex = gameAssets.itemUnlocks.data.findIndex(
+    (data) => data.stage_id === stageId,
+  );
+  if (itemUnlockIndex === -1) return null;
+  return gameAssets.itemUnlocks.data[itemUnlockIndex].item_id;
+};
+
 export const getScoresPerSecond = (stageId) => {
   const index = gameAssets.stages.data.findIndex((data) => stageId === data.id);
-  if (index === -1) return index;
+  if (index === -1) return null;
   return gameAssets.stages.data[index].scoresPerSecond;
 };

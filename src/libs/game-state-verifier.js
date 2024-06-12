@@ -1,8 +1,8 @@
-import { getGameAssets, getStageData } from "../../init/assets.js";
-import { getCurrentStage, getStage } from "../../models/stage.model.js";
-import InvalidStageError from "../errors/classes/invalid-stage.error.js";
-import { getUserItemScores } from "../../handlers/item-score.handler.js";
-import { SCORE_ERROR_TOLERANCE } from "../../constants.js";
+import { getGameAssets, getItemData, getItemUnlockStage, getStageData } from "../init/assets.js";
+import { SCORE_ERROR_TOLERANCE } from "../constants.js";
+import { getCurrentStage, getStage } from "../models/stage.model.js";
+import { getUserItemScore, getUserItemUnlocked } from "../models/item.model.js";
+import InvalidStageError from "./errors/classes/invalid-stage.error.js";
 
 const gameStateVerifier = {
   stageVerification: function (stageId) {
@@ -11,12 +11,12 @@ const gameStateVerifier = {
 
     // if the stage doesn't exist
     const stageData = getStageData(stageId);
-    if (!stageData) throw new InvalidStageError();
+    if (!stageData) throw new InvalidStageError("Target stage not found.");
 
     return stageData;
   },
 
-  currentStageVerification: function (userId, stageId) {
+  userCurrentStageVerification: function (userId, stageId) {
     // any of the parameters missing
     if (!userId) throw new InvalidStageError();
 
@@ -41,7 +41,7 @@ const gameStateVerifier = {
     // check if user played valid amount of time
     const serverTime = Date.now();
     const elapsedTime = (serverTime - currentStage.timestamp) / 1000;
-    const itemScore = getUserItemScores(userId);
+    const itemScore = getUserItemScore(userId);
     const scoresPerSecond = getStageData(currentStage.id).scoresPerSecond;
     const estimatedDeltaScore = currentScore - currentStage.prevScore - itemScore;
     const expectedDeltaScore = scoresPerSecond * elapsedTime;
@@ -54,6 +54,29 @@ const gameStateVerifier = {
     }
 
     return currentScore - itemScore;
+  },
+
+  itemVerifier: function (itemId) {
+    if (!itemId) throw new Error("itemId not given.");
+    const item = getItemData(itemId);
+    if (!item) throw new Error("Item's data doesn't exist.");
+    return item;
+  },
+
+  userItemUnlockVerification: function (userId, itemId) {
+    const userStages = getStage(userId);
+    const itemUnlockStage = getItemUnlockStage(itemId);
+    const index = userStages.findIndex((data) => data.id === itemUnlockStage.stage_id);
+    if (index === -1) throw new Error("Item not unlocked yet.");
+    return itemUnlockStage;
+  },
+
+  userObtainedItemVerification: function (userId, itemId) {
+    const item = this.itemVerifier(itemId);
+    const unlocked = getUserItemUnlocked(userId);
+    if (!unlocked || unlocked.length === 0) throw new Error("User items not initialized.");
+    if (!unlocked.includes(item.id)) throw new Error("Item not unlocked yet.");
+    return item;
   },
 };
 

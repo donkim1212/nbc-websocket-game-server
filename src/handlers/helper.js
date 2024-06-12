@@ -1,13 +1,16 @@
 import { CLIENT_VERSION } from "../constants.js";
-import { getGameAssets } from "../init/assets.js";
-import { createStage, setStage } from "../models/stage.model.js";
-import { getUsers, removeUser } from "../models/user.model.js";
+import { clearGameData } from "../libs/game-state-manager.js";
+import { createStage } from "../models/stage.model.js";
+import { getUsers, removeUserBySocketId, removeUserByUserId } from "../models/user.model.js";
 import errorHandler from "./error.handler.js";
 import handlerMappings from "./handler-mapping.js";
 
 export const handleDisconnect = (socket, uuid) => {
-  removeUser(socket.id);
-  console.log(`User disconnected: ${socket.id}`);
+  console.log(`User disconnected: ${socket.id}, ${uuid}`);
+  if (socket.id) removeUserBySocketId(socket.id);
+  else if (uuid) removeUserByUserId(uuid);
+
+  clearGameData(uuid);
   console.log("Current users: ", getUsers());
 };
 
@@ -20,7 +23,7 @@ export const handleConnection = (socket, uuid) => {
   socket.emit("connection", { uuid });
 };
 
-export const handlerEvent = (io, socket, data) => {
+export const handlerEvent = async (io, socket, data) => {
   try {
     if (!CLIENT_VERSION.includes(data.clientVersion)) {
       socket.emit("response", { status: "fail", message: "Client version mismatch." });

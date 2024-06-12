@@ -7,6 +7,8 @@ class ItemController {
   nextInterval = null;
   items = [];
 
+  unlockedItems = [1];
+
   constructor(ctx, itemImages, scaleRatio, speed) {
     this.ctx = ctx;
     this.canvas = ctx.canvas;
@@ -25,21 +27,26 @@ class ItemController {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
+  unlockItem(itemId) {
+    this.unlockedItems.push(itemId);
+  }
+
+  setUnlockedItems(unlockedItems) {
+    this.unlockedItems = unlockedItems;
+  }
+
   createItem() {
-    const index = this.getRandomNumber(0, this.itemImages.length - 1);
-    const itemInfo = this.itemImages[index];
+    const index = this.getRandomNumber(0, this.unlockedItems.length - 1);
+    const selectedId = this.unlockedItems[index];
+    this.createItemById(selectedId);
+  }
+
+  createItemById(itemId) {
+    const itemInfo = this.itemImages[itemId];
     const x = this.canvas.width * 1.5;
     const y = this.getRandomNumber(10, this.canvas.height - itemInfo.height);
 
-    const item = new Item(
-      this.ctx,
-      itemInfo.id,
-      x,
-      y,
-      itemInfo.width,
-      itemInfo.height,
-      itemInfo.image,
-    );
+    const item = new Item(this.ctx, itemId, x, y, itemInfo.width, itemInfo.height, itemInfo.image);
 
     this.items.push(item);
   }

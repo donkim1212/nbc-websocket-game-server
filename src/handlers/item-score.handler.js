@@ -1,7 +1,6 @@
 import { getGameAssets, getItemScore } from "../init/assets.js";
 import { getStage } from "../models/stage.model.js";
-
-const userItemScores = {};
+import { addUserItemTotal } from "../models/item.model.js";
 
 // Verify item, returns its score
 export const itemScoreHandler = (userId, payload) => {
@@ -22,19 +21,6 @@ export const itemScoreHandler = (userId, payload) => {
   const itemScore = getItemScore(itemId);
   if (itemScore === -1) return { status: "fail", message: "The item is non-existent." };
 
-  addUserItemScores(userId, itemScore);
+  addUserItemTotal(userId, itemScore);
   return { status: "success", message: "Item obtained.", payload: { score: itemScore } };
-};
-
-export const addUserItemScores = (userId, score) => {
-  if (!userItemScores[userId]?.total) setUserItemScores(userId, score);
-  else userItemScores[userId].total += score;
-};
-
-export const setUserItemScores = (userId, score) => {
-  userItemScores[userId] = { total: score };
-};
-
-export const getUserItemScores = (userId) => {
-  return userItemScores[userId];
 };
