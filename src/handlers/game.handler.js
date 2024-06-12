@@ -1,21 +1,8 @@
-import { getGameAssets } from "../init/assets.js";
-import { getStage, setStage, clearStage } from "../models/stage.model.js";
+import { reinitialize } from "../libs/game-state-manager.js";
+import { getStage } from "../models/stage.model.js";
 
 export const gameStart = (uuid, payload) => {
-  const { stages } = getGameAssets();
-  clearStage(uuid);
-  setStage(uuid, stages.data[0].id, payload.timestamp, 0);
-  console.log("Stage:", getStage(uuid));
-
-  console.log("", stages.data[0].scoresPerSecond);
-  return {
-    status: "success",
-    payload: {
-      id: stages.data[0].id,
-      targetScore: stages.data[0].score,
-      scoresPerSecond: stages.data[0].scoresPerSecond,
-    },
-  };
+  return reinitialize(uuid, payload.timestamp);
 };
 
 export const gameEnd = (uuid, payload) => {
