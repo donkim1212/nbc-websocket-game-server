@@ -38,7 +38,45 @@
 
 <br>
 
-- 스테이지 이동 요청 (handlerId: 11)
+- 게임 시작 payload (handlerId: 2)
+
+<table>
+<tr>
+<td>필드 명</td>
+<td>타입</td>
+<td>설명</td>
+</tr>
+
+<tr>
+<td>timestamp</td>
+<td>Date</td>
+<td>게임 시작 요청 시 클라이언트 시간</td>
+</tr>
+
+</table>
+
+<br>
+
+- 게임 종료 payload (handlerId: 3)
+
+<table>
+<tr>
+<td>필드 명</td>
+<td>타입</td>
+<td>설명</td>
+</tr>
+
+<tr>
+<td>score</td>
+<td>float</td>
+<td>게임 오버 시 달성한 점수</td>
+</tr>
+
+</table>
+
+<br>
+
+- 스테이지 이동 요청 payload (handlerId: 11)
 
 <table>
 <tr>
@@ -68,7 +106,7 @@
 
 <br>
 
-- 아이템 획득 (handlerId: 15)
+- 아이템 획득 payload (handlerId: 15)
 
 <table>
 <tr>
@@ -92,7 +130,7 @@
 <br>
 <br>
 
-- 패킷 구조 (서버 공통)
+- 패킷 구조 (서버 공통, highscore 제외)
 
 <table>
 <tr>
@@ -124,6 +162,68 @@
 <td>JSON</td>
 <td>(상태 변경이 필요할 때) 게임 상태 업데이트를 위해 필요한 정보가 담긴 객체</td>
 </tr>
+
+</table>
+
+<br>
+
+- highscore 패킷
+
+<table>
+<tr>
+<td>필드 명</td>
+<td>타입</td>
+<td>설명</td>
+</tr>
+
+<tr>
+<td>userId</td>
+<td>string</td>
+<td>highscore를 달성한 유저의 ID</td>
+</tr>
+
+<tr>
+<td>highscore</td>
+<td>float</td>
+<td>현재 highscore 점수</td>
+</tr>
+</table>
+
+<br>
+
+- 게임 시작 payload (handlerId: 2)
+
+<table>
+<tr>
+<td>필드 명</td>
+<td>타입</td>
+<td>설명</td>
+</tr>
+
+<tr>
+<td>id</td>
+<td>int</td>
+<td>시작 스테이지 ID</td>
+</tr>
+
+<tr>
+<td>targetScore</td>
+<td>int</td>
+<td>다음 라운드 필요 score</td>
+</tr>
+
+<tr>
+<td>scoresPerSecond</td>
+<td>int</td>
+<td>이번 스테이지 초당 획득 점수</td>
+</tr>
+
+<tr>
+<td>unlockedItems</td>
+<td>array</td>
+<td>첫 라운드 해금 아이템의 ID가 담긴 배열</td>
+</tr>
+
 
 </table>
 
@@ -172,8 +272,15 @@
 <tr>
 <td>targetScore</td>
 <td>int</td>
-<td>이동하는 스테이지에서 그 다음 스테이지로 이동하기 위한 요구 점수</td>
+<td>다음 스테이지로 이동하기 위한 요구 점수</td>
 </tr>
+
+<tr>
+<td>unlockedItemId</td>
+<td>int</td>
+<td>이번 스테이지에서 해금되는 아이템의 ID</td>
+</tr>
+
 
 </table>
 
