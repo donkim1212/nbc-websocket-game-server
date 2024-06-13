@@ -10,7 +10,7 @@ export const handleDisconnect = (socket, uuid) => {
   if (socket.id) removeUserBySocketId(socket.id);
   else if (uuid) removeUserByUserId(uuid);
 
-  clearGameData(uuid);
+  // clearGameData(uuid);
   console.log("Current users: ", getUsers());
 };
 
