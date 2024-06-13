@@ -12,7 +12,7 @@ const registerHandler = (io) => {
   io.on("connection", async (socket) => {
     const clientUserId = socket.handshake.query?.userId;
     console.log("clientUserId: ", clientUserId);
-    const userUUID = clientUserId !== "" ? clientUserId : uuidv4();
+    const userUUID = !clientUserId || clientUserId === "" ? uuidv4() : clientUserId;
     addUser({ userId: userUUID, socketId: socket.id });
     await handleConnection(socket, userUUID);
     // console.log("===== ", socket.data);
