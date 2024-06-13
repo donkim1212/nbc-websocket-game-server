@@ -31,4 +31,10 @@ const clearGameData = (userId) => {
   removeStage(userId);
 };
 
-export { reinitialize, clearGameData };
+const checkHighscore = (userId, score) => {
+  // checks highscore list and add new score if necessary
+  // return highscore
+  return score; // temp
+};
+
+export { reinitialize, clearGameData, checkHighscore };
