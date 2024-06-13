@@ -5,14 +5,14 @@ export const gameStart = async (uuid, payload) => {
   return await reinitialize(uuid, payload.timestamp);
 };
 
-export const gameEnd = (userId, payload) => {
+export const gameEnd = async (userId, payload) => {
   const { score } = payload;
 
   // const stages = getStage(userId);
   // if (!stages.length) {
   //   return { status: "fail", message: "No stages found for the user." };
   // }
-  const currentStage = gsv.userCurrentStageVerificationEx(userId);
+  const currentStage = await gsv.userCurrentStageVerificationEx(userId);
 
   // let totalScore = 0;
   // stages.forEach((stage, index) => {
