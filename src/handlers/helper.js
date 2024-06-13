@@ -1,5 +1,5 @@
 import { CLIENT_VERSION } from "../constants.js";
-import { clearGameData } from "../libs/game-state-manager.js";
+import { clearGameData, getHighscore } from "../libs/game-state-manager.js";
 import { stageModelRedis as stageModel } from "../models/stage.model.js";
 import { getUsers, removeUserBySocketId, removeUserByUserId } from "../models/user.model.js";
 import errorHandler from "./error.handler.js";
@@ -20,6 +20,8 @@ export const handleConnection = async (socket, uuid) => {
 
   // createStage(uuid);
   await stageModel.createStage(uuid);
+  const highscore = await getHighscore();
+  socket.emit("response", highscore);
 
   socket.emit("connection", { uuid });
 };
@@ -34,10 +36,8 @@ export const handlerEvent = async (io, socket, data) => {
     const response = await handler(data.userId, data.payload);
     if (response.payload) response.handlerId = data.handlerId;
 
-    if (response.broadcast) {
-      io.emit("response", "broadcast");
-      return;
-    }
+    if (response.broadcast) io.emit("response", response.broadcast);
+    delete response.broadcast;
 
     socket.emit("response", response);
   } catch (err) {
