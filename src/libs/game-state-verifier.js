@@ -30,10 +30,16 @@ const gameStateVerifier = {
 
     // if user doesn't have stages set
     const currentStage = getCurrentStage(userId);
-    if (!currentStage) throw new InvalidStageError("No stages found for the user");
+    if (!currentStage) throw new InvalidStageError("No stages found for the user.");
     // if user should really be on that stage
     if (currentStage.id !== stageId) throw new InvalidStageError("Current stage mismatch.");
 
+    return currentStage;
+  },
+
+  userCurrentStageVerificationEx: function (userId) {
+    const currentStage = getCurrentStage(userId);
+    if (!currentStage) throw new InvalidStageError("No stages found for the user.");
     return currentStage;
   },
 
@@ -58,6 +64,7 @@ const gameStateVerifier = {
       throw new Error("Invalid elapsed time.");
     }
 
+    // returns delta score w/o itemScore
     return currentScore - itemScore;
   },
 
