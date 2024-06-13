@@ -26,9 +26,9 @@ const reinitialize = async (userId, timestamp) => {
   };
 };
 
-const clearGameData = (userId) => {
+const clearGameData = async (userId) => {
   removeUserItemData(userId);
-  removeStage(userId);
+  stageModel.removeStage(userId);
 };
 
 export { reinitialize, clearGameData };
