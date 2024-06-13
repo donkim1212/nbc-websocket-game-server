@@ -1,5 +1,6 @@
 import { CLIENT_VERSION } from "./Constants.js";
 import { handleResponse } from "./handlers/helper.js";
+import Score from "./Score.js";
 
 let userId = localStorage.getItem("userId");
 
@@ -13,6 +14,10 @@ const socket = io("http://localhost:3000", {
 socket.on("response", (data) => {
   if (data.handlerId) handleResponse(data);
   console.log(data);
+  if (data.highscore) {
+    Score.setHighScoreStatics(data.highscore);
+    return;
+  }
 });
 
 socket.on("connection", (data) => {
