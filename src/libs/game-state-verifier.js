@@ -37,6 +37,12 @@ const gameStateVerifier = {
     return currentStage;
   },
 
+  userCurrentStageVerificationEx: function (userId) {
+    const currentStage = getCurrentStage(userId);
+    if (!currentStage) throw new InvalidStageError("No stages found for the user.");
+    return currentStage;
+  },
+
   scoreVerification: function (userId, currentStage, currentScore) {
     // any of the parameters missing
     if ((!userId, !currentStage, !currentScore)) {
@@ -58,6 +64,7 @@ const gameStateVerifier = {
       throw new Error("Invalid elapsed time.");
     }
 
+    // returns delta score w/o itemScore
     return currentScore - itemScore;
   },
 
