@@ -11,11 +11,9 @@ const registerHandler = (io) => {
   // });
   io.on("connection", async (socket) => {
     const clientUserId = socket.handshake.query?.userId;
-    // console.log("clientUserId: ", clientUserId);
     const userUUID = uuidValidateV4(clientUserId) ? clientUserId : uuidv4();
     addUser({ userId: userUUID, socketId: socket.id });
     await handleConnection(socket, userUUID);
-    // console.log("===== ", socket.data);
     socket.on("event", (data) => handlerEvent(io, socket, data));
     socket.on("disconnect", (socket) => handleDisconnect(socket, userUUID));
   });
