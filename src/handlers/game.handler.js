@@ -1,4 +1,5 @@
 import { reinitialize } from "../libs/game-state-manager.js";
+import gsv from "../libs/game-state-verifier.js";
 
 export const gameStart = async (uuid, payload) => {
   return await reinitialize(uuid, payload.timestamp);
