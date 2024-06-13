@@ -37,8 +37,8 @@ const gameStateVerifier = {
     return currentStage;
   },
 
-  userCurrentStageVerificationEx: function (userId) {
-    const currentStage = getCurrentStage(userId);
+  userCurrentStageVerificationEx: async function (userId) {
+    const currentStage = await stageModel.getCurrentStage(userId);
     if (!currentStage) throw new InvalidStageError("No stages found for the user.");
     return currentStage;
   },
