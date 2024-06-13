@@ -9,8 +9,10 @@ const registerHandler = (io) => {
   //   console.log("=============");
   //   next();
   // });
-  io.on("connection", (socket) => {
-    const userUUID = uuidv4();
+  io.on("connection", async (socket) => {
+    const clientUserId = socket.handshake.query?.userId;
+    console.log("clientUserId: ", clientUserId);
+    const userUUID = clientUserId !== "" ? clientUserId : uuidv4();
     addUser({ userId: userUUID, socketId: socket.id });
     handleConnection(socket, userUUID);
     // console.log("===== ", socket.data);
