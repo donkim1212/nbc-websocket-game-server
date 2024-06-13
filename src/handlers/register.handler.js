@@ -9,10 +9,10 @@ const registerHandler = (io) => {
   //   console.log("=============");
   //   next();
   // });
-  io.on("connection", (socket) => {
+  io.on("connection", async (socket) => {
     const userUUID = uuidv4();
     addUser({ userId: userUUID, socketId: socket.id });
-    handleConnection(socket, userUUID);
+    await handleConnection(socket, userUUID);
     // console.log("===== ", socket.data);
     socket.on("event", (data) => handlerEvent(io, socket, data));
     socket.on("disconnect", (socket) => handleDisconnect(socket, userUUID));

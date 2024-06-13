@@ -1,13 +1,13 @@
 import { reinitialize } from "../libs/game-state-manager.js";
-import { getStage } from "../models/stage.model.js";
+import { stageModelRedis as stageModel } from "../models/stage.model.js";
 
-export const gameStart = (uuid, payload) => {
-  return reinitialize(uuid, payload.timestamp);
+export const gameStart = async (uuid, payload) => {
+  return await reinitialize(uuid, payload.timestamp);
 };
 
-export const gameEnd = (uuid, payload) => {
+export const gameEnd = async (uuid, payload) => {
   const { timestamp: gameEndTime, score } = payload;
-  const stages = getStage(uuid);
+  const stages = await stageModel.getStage(uuid);
   if (!stages.length) {
     return { status: "fail", message: "No stages found for the user." };
   }

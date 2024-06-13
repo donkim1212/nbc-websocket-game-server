@@ -5,7 +5,7 @@ import {
   getStageData,
 } from "../init/assets.js";
 import { SCORE_ERROR_TOLERANCE } from "../constants.js";
-import { getCurrentStage, getStage } from "../models/stage.model.js";
+import { stageModelRedis as stageModel } from "../models/stage.model.js";
 import { getUserItemScore } from "../models/item.model.js";
 import InvalidStageError from "./errors/classes/invalid-stage.error.js";
 
@@ -21,7 +21,7 @@ const gameStateVerifier = {
     return stageData;
   },
 
-  userCurrentStageVerification: function (userId, stageId) {
+  userCurrentStageVerification: async function (userId, stageId) {
     // any of the parameters missing
     if (!userId) throw new InvalidStageError();
 
@@ -29,7 +29,7 @@ const gameStateVerifier = {
     this.stageVerification(stageId);
 
     // if user doesn't have stages set
-    const currentStage = getCurrentStage(userId);
+    const currentStage = await stageModel.getCurrentStage(userId);
     if (!currentStage) throw new InvalidStageError("No stages found for the user");
     // if user should really be on that stage
     if (currentStage.id !== stageId) throw new InvalidStageError("Current stage mismatch.");
@@ -68,21 +68,21 @@ const gameStateVerifier = {
     return item;
   },
 
-  userItemUnlockVerification: function (userId, itemId) {
-    const userStages = getStage(userId);
+  userItemUnlockVerification: async function (userId, itemId) {
+    const userStages = await stageModel.getStage(userId);
     const itemUnlockStage = getItemUnlockStage(itemId);
     const index = userStages.findIndex((data) => data.id === itemUnlockStage.stage_id);
     if (index === -1) throw new Error("Item not unlocked yet.");
     return itemUnlockStage;
   },
 
-  userObtainedItemVerification: function (userId, itemId) {
+  userObtainedItemVerification: async function (userId, itemId) {
     const item = this.itemVerifier(itemId);
 
     // find item's unlock stage using getItemUnlockStage(itemId)
     const unlocksAt = getItemUnlockStageId(item.id);
-    // use getStage(userId) to get user's stages
-    const stages = getStage(userId);
+    // use getStageRedis(userId) to get user's stages
+    const stages = await stageModel.getStage(userId);
     // check if the user's stages contain unlock stage
     const index = stages.findIndex((stage) => stage.id === unlocksAt);
     if (index === -1) throw new Error("Invalid item acquisition detected.");
