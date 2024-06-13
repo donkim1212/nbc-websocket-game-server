@@ -25,27 +25,29 @@ export const stageModel = {
 };
 
 export const stageModelRedis = {
-  createStage: async (userId) => {
-    await redisClient.set(userId, JSON.stringify([]));
+  createStage: async function (userId) {
+    await redisClient.set("" + userId, "[]");
   },
-  getStage: async (userId) => {
-    return JSON.stringify(await redisClient.get(userId));
+  getStage: async function (userId) {
+    return JSON.parse(await redisClient.get("" + userId));
   },
-  getCurrentStage: async (userId) => {
-    const stages = await this.getStageRedis(userId);
+  getCurrentStage: async function (userId) {
+    const stages = await this.getStage("" + userId);
     if (!stages) return null;
     return stages[stages.length - 1];
   },
-  setStage: async (userId, stageId, timestamp, prevScore) => {
-    const data = await this.getStageRedis(userId);
+  setStage: async function (userId, stageId, timestamp, prevScore) {
+    // console.log(this.getStage);
+    const data = await this.getStage(userId);
+    // console.log("==========", data);
     data.push({ id: stageId, timestamp, prevScore });
-    await redisClient.set(userId, data);
+    await redisClient.set(userId, JSON.stringify(data));
     return data;
   },
-  clearStage: async (userId) => {
-    await redisClient.set(userId, JSON.stringify([]));
+  clearStage: async function (userId) {
+    await redisClient.set("" + userId, "[]");
   },
-  removeStage: (userId) => {
+  removeStage: function (userId) {
     // placeholder
     return;
   },
