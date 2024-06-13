@@ -12,7 +12,7 @@ import InvalidStageError from "./errors/classes/invalid-stage.error.js";
 const gameStateVerifier = {
   stageVerification: function (stageId) {
     // stageId missing
-    if (!stageId) throw new InvalidStageError();
+    // if (!stageId) throw new InvalidStageError();
 
     // if the stage doesn't exist
     const stageData = getStageData(stageId);
@@ -45,9 +45,11 @@ const gameStateVerifier = {
 
   scoreVerification: function (userId, currentStage, currentScore) {
     // any of the parameters missing
-    if ((!userId, !currentStage, !currentScore)) {
-      throw new Error("Score verification failed.");
-    }
+    // if ((!userId, !currentStage, !currentScore)) {
+    //   throw new Error("Score verification failed.");
+    // }
+
+    // if (typeof currentScore !== "number") throw new Error("Invalid score data type given.");
 
     // check if user played valid amount of time
     const serverTime = Date.now();
@@ -69,7 +71,7 @@ const gameStateVerifier = {
   },
 
   itemVerifier: function (itemId) {
-    if (!itemId) throw new Error("itemId not given.");
+    // if (!itemId) throw new Error("itemId not given.");
     const item = getItemData(itemId);
     if (!item) throw new Error("Item's data doesn't exist.");
     return item;
