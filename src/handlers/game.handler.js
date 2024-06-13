@@ -28,7 +28,7 @@ export const gameEnd = async (userId, payload) => {
   // });
 
   // 점수와 타임스탬프 검증
-  const finalScore = gsv.scoreVerification(userId, currentStage, score);
+  const deltaScore = gsv.scoreVerification(userId, currentStage, score);
   // if (Math.abs(score - totalScore) > 5) {
   //   return { status: "fail", message: "Score verification failed." };
   // }
