@@ -4,6 +4,7 @@
 .AppleDouble
 .LSOverride
 *.json
+dump.rdb
 
 # Should be ignored
 **/*.png
