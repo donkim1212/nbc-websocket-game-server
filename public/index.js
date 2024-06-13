@@ -227,7 +227,8 @@ function gameLoop(currentTime) {
 
   if (!gameover && cactiController.collideWith(player)) {
     gameover = true;
-    score.setHighScore();
+    // score.setHighScore();
+    sendEvent(3, { score: score.score });
     setupGameReset();
   }
   const collideWithItem = itemController.collideWith(player);

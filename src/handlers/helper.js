@@ -1,5 +1,5 @@
 import { CLIENT_VERSION } from "../constants.js";
-import { clearGameData } from "../libs/game-state-manager.js";
+import { clearGameData, getHighscore } from "../libs/game-state-manager.js";
 import { stageModelRedis as stageModel } from "../models/stage.model.js";
 import { getUsers, removeUserBySocketId, removeUserByUserId } from "../models/user.model.js";
 import errorHandler from "./error.handler.js";
@@ -10,7 +10,7 @@ export const handleDisconnect = async (socket, uuid) => {
   if (socket.id) removeUserBySocketId(socket.id);
   else if (uuid) removeUserByUserId(uuid);
 
-  clearGameData(uuid);
+  // clearGameData(uuid);
   console.log("Current users: ", getUsers());
 };
 
@@ -20,30 +20,24 @@ export const handleConnection = async (socket, uuid) => {
 
   // createStage(uuid);
   await stageModel.createStage(uuid);
+  const highscore = await getHighscore();
+  socket.emit("response", highscore);
 
   socket.emit("connection", { uuid });
 };
 
 export const handlerEvent = async (io, socket, data) => {
   try {
-    if (!CLIENT_VERSION.includes(data.clientVersion)) {
-      socket.emit("response", { status: "fail", message: "Client version mismatch." });
-      return;
-    }
+    if (!CLIENT_VERSION.includes(data.clientVersion)) throw new Error("Client version mismatch.");
 
     const handler = handlerMappings[data.handlerId];
-    if (!handler) {
-      socket.emit("response", { status: "fail", message: "Handler not found." });
-      return;
-    }
+    if (!handler) throw new Error("Handler not found.");
 
     const response = await handler(data.userId, data.payload);
     if (response.payload) response.handlerId = data.handlerId;
 
-    if (response.broadcast) {
-      io.emit("response", "broadcast");
-      return;
-    }
+    if (response.broadcast) io.emit("response", response.broadcast);
+    delete response.broadcast;
 
     socket.emit("response", response);
   } catch (err) {

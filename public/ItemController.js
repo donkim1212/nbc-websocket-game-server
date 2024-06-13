@@ -10,6 +10,7 @@ class ItemController {
   unlockedItems = [1];
 
   constructor(ctx, itemImages, scaleRatio, speed) {
+    if (ItemController.instance) return ItemController.instance;
     this.ctx = ctx;
     this.canvas = ctx.canvas;
     this.itemImages = itemImages;
@@ -17,6 +18,11 @@ class ItemController {
     this.speed = speed;
 
     this.setNextItemTime();
+    ItemController.instance = this;
+  }
+
+  static getInstance() {
+    return ItemController.instance;
   }
 
   setNextItemTime() {

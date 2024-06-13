@@ -1,24 +1,29 @@
 import { CLIENT_VERSION } from "./Constants.js";
 import { handleResponse } from "./handlers/helper.js";
+import Score from "./Score.js";
 
-// const jobQueue = [];
+let userId = localStorage.getItem("userId");
 
 const socket = io("http://localhost:3000", {
   query: {
     clientVersion: CLIENT_VERSION,
+    userId: userId ? userId : "",
   },
 });
 
-let userId = null;
 socket.on("response", (data) => {
-  // pushEventData(data);
   if (data.handlerId) handleResponse(data);
   console.log(data);
+  if (data.highscore) {
+    Score.setHighScoreStatics(data.highscore);
+    return;
+  }
 });
 
 socket.on("connection", (data) => {
   console.log("connection: ", data);
   userId = data.uuid;
+  localStorage.setItem("userId", userId);
 });
 
 const sendEvent = (handlerId, payload) => {
@@ -29,16 +34,5 @@ const sendEvent = (handlerId, payload) => {
     payload,
   });
 };
-
-// make a job queue?
-// export this for index.js to poll data from job queue
-// const pushEventData = (data) => {
-//   const { status, message, ...keys } = data;
-//   jobQueue.push(...keys);
-// };
-
-// const pollFromJobQueue = () => {
-//   return jobQueue.shift();
-// };
 
 export { sendEvent };

@@ -1,16 +1,21 @@
-import { score as gameScore, itemController } from "../index.js";
+import Score from "../Score.js";
+import ItemController from "../ItemController.js";
+
+let gameScore = null;
+let itemController = null;
 
 const gameStartHandler = (payload) => {
+  if (!gameScore) gameScore = Score.getInstance();
   gameScore.setNextStage(payload.id, payload.targetScore, payload.scoresPerSecond);
+  if (!itemController) itemController = ItemController.getInstance();
   itemController.setUnlockedItems(payload.unlockedItems);
   console.log("Unlocked: ", itemController.unlockedItems);
   console.log("Next: ", payload.targetScore);
 };
 
-const gameEndHandler = (payload, score) => {
-  const { score: finalScore } = payload;
-  gameScore.setScore(finalScore);
-  gameScore.setHighScore();
+const gameEndHandler = (payload) => {
+  if (!gameScore) gameScore = Score.getInstance();
+  gameScore.setScore(payload.score);
 };
 
 export { gameStartHandler, gameEndHandler };

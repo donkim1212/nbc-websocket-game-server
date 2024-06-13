@@ -1,42 +1,54 @@
 import { sendEvent } from "./Socket.js";
 
+export const HIGH_SCORE_KEY = "highScore";
+
 class Score {
   score = 0;
-  HIGH_SCORE_KEY = "highScore";
+
   scoreRequiredToAdvance = 100;
   scoresPerSecond = 1;
   stageId = 1000;
 
   constructor(ctx, scaleRatio) {
+    if (Score.instance) return Score.instance;
     this.ctx = ctx;
     this.canvas = ctx.canvas;
     this.scaleRatio = scaleRatio;
+    Score.instance = this;
+  }
+
+  static getInstance() {
+    return Score.instance;
+  }
+
+  static setHighScoreStatics(score) {
+    localStorage.setItem(this.HIGH_SCORE_KEY, Math.floor(+score));
   }
 
   update(deltaTime) {
     this.score += deltaTime * 0.001 * this.scoresPerSecond;
-    // 점수 만족 시 서버에 메세지 전송
+
     if (this.score >= this.scoreRequiredToAdvance && this.stageChange) {
       this.stageChange = false;
-      // console.log("NEXT STAGE EVENT SENT");
       sendEvent(11, { currentStage: this.stageId, score: this.score });
     }
   }
 
   getItem(itemId) {
     sendEvent(15, { itemId });
-    // this.score += 0;
   }
 
   reset() {
     this.score = 0;
   }
 
-  setHighScore() {
-    const highScore = Number(localStorage.getItem(this.HIGH_SCORE_KEY));
-    if (this.score > highScore) {
-      localStorage.setItem(this.HIGH_SCORE_KEY, Math.floor(this.score));
-    }
+  setHighScore(score) {
+    console.log("SCOREOCSOERISOR ", score);
+    localStorage.setItem(this.HIGH_SCORE_KEY, Math.floor(+score));
+    // const highScore = Number(localStorage.getItem(this.HIGH_SCORE_KEY));
+    // if (this.score > highScore) {
+    //   localStorage.setItem(this.HIGH_SCORE_KEY, Math.floor(this.score));
+    // }
   }
 
   getScore() {
