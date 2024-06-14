@@ -261,9 +261,9 @@ requestAnimationFrame(gameLoop);
 window.addEventListener("keyup", reset, { once: true });
 
 // 테스트용 아이템 스포닝
-window.addEventListener("keyup", (e) => {
-  const n = +e.code.charAt(6);
-  if (n < 7 && n > 0) {
-    itemController.createItemById(n);
-  }
-});
+// window.addEventListener("keyup", (e) => {
+//   const n = +e.code.charAt(6);
+//   if (n < 7 && n > 0) {
+//     itemController.createItemById(n);
+//   }
+// });
