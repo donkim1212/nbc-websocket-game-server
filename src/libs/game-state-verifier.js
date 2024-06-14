@@ -1,10 +1,5 @@
-import {
-  getItemData,
-  getItemUnlockStage,
-  getItemUnlockStageId,
-  getStageData,
-} from "../init/assets.js";
-import { SCORE_ERROR_TOLERANCE } from "../constants.js";
+import { getItemData, getItemUnlockStage, getStageData } from "../init/assets.js";
+import { SCORE_ERROR_TOLERANCE, SPAWN_RATE_TOLERANCE } from "../constants.js";
 import { stageModelRedis as stageModel } from "../models/stage.model.js";
 import { getUserItemScore } from "../models/item.model.js";
 import InvalidStageError from "./errors/classes/invalid-stage.error.js";
@@ -49,9 +44,9 @@ const gameStateVerifier = {
     return currentStage;
   },
 
-  scoreVerification: function (userId, currentStage, currentScore) {
-    const serverTime = Date.now();
-    const elapsedTime = (serverTime - currentStage.timestamp) / 1000;
+  scoreVerification: function (userId, currentStage, currentScore, timestamp) {
+    // const serverTime = Date.now();
+    const elapsedTime = (timestamp - currentStage.timestamp) / 1000;
     const itemScore = getUserItemScore(userId);
     const scoresPerSecond = getStageData(currentStage.id).scoresPerSecond;
     const estimatedDeltaScore = currentScore - currentStage.prevScore - itemScore;
@@ -85,7 +80,7 @@ const gameStateVerifier = {
 
   itemIntervalVerificationSync: function (userItem, minInterval) {
     const elapsedTime = Date.now() - userItem.timestamp;
-    if (elapsedTime < minInterval) {
+    if (elapsedTime + SPAWN_RATE_TOLERANCE < minInterval) {
       throw new Error("Invalid item acquisition detected.");
     }
   },

@@ -1,4 +1,4 @@
-import { getGameAssets, getUnlockedItemIdByStageId } from "../init/assets.js";
+import { getGameAssets, getItemData, getUnlockedItemIdByStageId } from "../init/assets.js";
 import redisClient from "../init/redis.connect.js";
 import { initUserItem, removeUserItemData } from "../models/item.model.js";
 import { stageModelRedis as stageModel } from "../models/stage.model.js";
@@ -14,7 +14,9 @@ const reinitialize = async (userId, timestamp) => {
   initUserItem(userId);
 
   const unlockedItems = [];
-  unlockedItems.push(getUnlockedItemIdByStageId(stages.data[0].id));
+  const unlockedItemId = getUnlockedItemIdByStageId(stages.data[0].id);
+  const item = getItemData(unlockedItemId);
+  unlockedItems.push(item);
 
   return {
     status: "success",

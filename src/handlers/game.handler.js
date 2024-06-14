@@ -1,11 +1,11 @@
 import { reinitialize, checkHighscore } from "../libs/game-state-manager.js";
 import gsv from "../libs/game-state-verifier.js";
 
-export const gameStart = async (uuid, payload) => {
-  return await reinitialize(uuid, payload.timestamp);
+export const gameStart = async (uuid, payload, timestamp) => {
+  return await reinitialize(uuid, timestamp);
 };
 
-export const gameEnd = async (userId, payload) => {
+export const gameEnd = async (userId, payload, timestamp) => {
   const { score } = payload;
 
   const stages = await gsv.stagesVerification(userId);

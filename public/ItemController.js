@@ -1,13 +1,13 @@
 import Item from "./Item.js";
 
 class ItemController {
-  INTERVAL_MIN = 0;
-  INTERVAL_MAX = 12000;
+  // INTERVAL_MIN = 0;
+  // INTERVAL_MAX = 12000;
 
   nextInterval = null;
   items = [];
 
-  unlockedItems = [1];
+  unlockedItems = [{ id: 1, score: 5, min_interval: 3000, max_interval: 8000 }];
 
   constructor(ctx, itemImages, scaleRatio, speed) {
     if (ItemController.instance) return ItemController.instance;
@@ -17,7 +17,9 @@ class ItemController {
     this.scaleRatio = scaleRatio;
     this.speed = speed;
 
-    this.setNextItemTime();
+    const index = this.getRandomNumber(0, this.unlockedItems.length - 1);
+    const selectedItem = this.unlockedItems[index];
+    this.setNextItemTime(selectedItem.min_interval, selectedItem.max_interval);
     ItemController.instance = this;
   }
 
@@ -25,16 +27,16 @@ class ItemController {
     return ItemController.instance;
   }
 
-  setNextItemTime() {
-    this.nextInterval = this.getRandomNumber(this.INTERVAL_MIN, this.INTERVAL_MAX);
+  setNextItemTime(minInterval, maxInterval) {
+    this.nextInterval = this.getRandomNumber(minInterval, maxInterval);
   }
 
   getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  unlockItem(itemId) {
-    this.unlockedItems.push(itemId);
+  unlockItem(item) {
+    this.unlockedItems.push(item);
   }
 
   setUnlockedItems(unlockedItems) {
@@ -43,8 +45,9 @@ class ItemController {
 
   createItem() {
     const index = this.getRandomNumber(0, this.unlockedItems.length - 1);
-    const selectedId = this.unlockedItems[index];
-    this.createItemById(selectedId);
+    const selectedItem = this.unlockedItems[index];
+    this.createItemById(selectedItem.id);
+    return selectedItem;
   }
 
   createItemById(itemId) {
@@ -59,8 +62,8 @@ class ItemController {
 
   update(gameSpeed, deltaTime) {
     if (this.nextInterval <= 0) {
-      this.createItem();
-      this.setNextItemTime();
+      const item = this.createItem();
+      this.setNextItemTime(item.min_interval, item.max_interval);
     }
 
     this.nextInterval -= deltaTime;
