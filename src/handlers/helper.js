@@ -28,12 +28,13 @@ export const handleConnection = async (socket, uuid) => {
 
 export const handlerEvent = async (io, socket, data) => {
   try {
+    const timestamp = Date.now();
     if (!CLIENT_VERSION.includes(data.clientVersion)) throw new Error("Client version mismatch.");
 
     const handler = handlerMappings[data.handlerId];
     if (!handler) throw new Error("Handler not found.");
 
-    const response = await handler(data.userId, data.payload);
+    const response = await handler(data.userId, data.payload, timestamp);
     if (response.payload) response.handlerId = data.handlerId;
 
     if (response.broadcast) io.emit("response", response.broadcast);
