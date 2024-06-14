@@ -35,7 +35,7 @@ class Score {
   }
 
   getItem(itemId) {
-    sendEvent(15, { itemId });
+    sendEvent(15, { itemId, timestamp: Date.now() });
   }
 
   reset() {
