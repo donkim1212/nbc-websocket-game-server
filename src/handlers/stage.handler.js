@@ -1,4 +1,4 @@
-import { getUnlockedItemIdByStageId } from "../init/assets.js";
+import { getItemData, getUnlockedItemIdByStageId } from "../init/assets.js";
 import { stageModelRedis as stageModel } from "../models/stage.model.js";
 import gsv from "../libs/game-state-verifier.js";
 
