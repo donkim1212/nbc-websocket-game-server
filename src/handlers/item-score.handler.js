@@ -3,7 +3,7 @@ import { addUserItem, getUserItem } from "../models/item.model.js";
 import gsv from "../libs/game-state-verifier.js";
 
 // Verify item, returns its score
-export const itemScoreHandler = async (userId, payload) => {
+export const itemScoreHandler = async (userId, payload, timestamp) => {
   const { itemId } = payload;
   const item = await gsv.itemVerification(itemId);
   const stages = await gsv.stagesVerification(userId);
