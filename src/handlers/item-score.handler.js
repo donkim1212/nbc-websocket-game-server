@@ -18,5 +18,6 @@ export const itemScoreHandler = async (userId, payload, timestamp) => {
 
   addUserItem(userId, itemScore);
 
-  return { status: "success", message: "Item obtained.", payload: { score: itemScore } };
+  // return { status: "success", message: "Item obtained.", payload: { score: itemScore } };
+  return { status: "success", message: "Item obtained." };
 };

@@ -233,7 +233,7 @@ function gameLoop(currentTime) {
   }
   const collideWithItem = itemController.collideWith(player);
   if (collideWithItem && collideWithItem.itemId) {
-    score.getItem(collideWithItem.itemId);
+    score.getItem(collideWithItem);
   }
 
   // draw
