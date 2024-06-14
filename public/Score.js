@@ -43,7 +43,6 @@ class Score {
   }
 
   setHighScore(score) {
-    console.log("SCOREOCSOERISOR ", score);
     localStorage.setItem(this.HIGH_SCORE_KEY, Math.floor(+score));
     // const highScore = Number(localStorage.getItem(this.HIGH_SCORE_KEY));
     // if (this.score > highScore) {

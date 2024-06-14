@@ -78,9 +78,6 @@ const gameStateVerifier = {
   userItemUnlockVerification: async function (userId, item, stages) {
     const userStages = stages ? stages : await stageModel.getStage(userId);
     const itemUnlockStage = getItemUnlockStage(item.id);
-    console.log("-=---------------------=");
-    console.log(userStages, itemUnlockStage);
-    console.log("-=---------------------=");
     const index = userStages.findIndex((data) => data.id === itemUnlockStage.id);
     if (index === -1) throw new Error("Item not unlocked yet.");
     return itemUnlockStage;

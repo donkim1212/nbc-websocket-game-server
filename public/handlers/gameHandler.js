@@ -9,8 +9,6 @@ const gameStartHandler = (payload) => {
   gameScore.setNextStage(payload.id, payload.targetScore, payload.scoresPerSecond);
   if (!itemController) itemController = ItemController.getInstance();
   itemController.setUnlockedItems(payload.unlockedItems);
-  console.log("Unlocked: ", itemController.unlockedItems);
-  console.log("Next: ", payload.targetScore);
 };
 
 const gameEndHandler = (payload) => {

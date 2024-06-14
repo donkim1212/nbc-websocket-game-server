@@ -37,9 +37,7 @@ export const stageModelRedis = {
     return stages[stages.length - 1];
   },
   setStage: async function (userId, stageId, timestamp, prevScore) {
-    // console.log(this.getStage);
     const data = await this.getStage(userId);
-    // console.log("==========", data);
     data.push({ id: stageId, timestamp, prevScore });
     await redisClient.set("" + userId, JSON.stringify(data));
     return data;

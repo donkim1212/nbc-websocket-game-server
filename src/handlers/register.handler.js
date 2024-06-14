@@ -3,12 +3,6 @@ import { addUser } from "../models/user.model.js";
 import { handleConnection, handleDisconnect, handlerEvent } from "./helper.js";
 
 const registerHandler = (io) => {
-  // io.use(async function (socket, next) {
-  //   console.log("=============");
-  //   console.log(socket.data);
-  //   console.log("=============");
-  //   next();
-  // });
   io.on("connection", async (socket) => {
     const clientUserId = socket.handshake.query?.userId;
     const userUUID = uuidValidateV4(clientUserId) ? clientUserId : uuidv4();

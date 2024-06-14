@@ -9,8 +9,6 @@ const stageHandler = (payload) => {
   gameScore.setNextStage(payload.id, payload.targetScore, payload.scoresPerSecond);
   if (!itemController) itemController = ItemController.getInstance();
   itemController.unlockItem(payload.unlockedItemId);
-  // console.log("Unlocked: ", itemController.unlockedItems);
-  // console.log("Next: ", payload.targetScore);
 };
 
 export default stageHandler;
