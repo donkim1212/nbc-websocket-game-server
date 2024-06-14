@@ -21,6 +21,12 @@ const gameStateVerifier = {
     return stageData;
   },
 
+  stagesVerification: async function (userId) {
+    const stages = await stageModel.getStage(userId);
+    if (!stages) throw new InvalidStageError("No stages found for the user");
+    return stages;
+  },
+
   userCurrentStageVerification: async function (userId, stageId) {
     // any of the parameters missing
     if (!userId) throw new InvalidStageError();
@@ -37,21 +43,13 @@ const gameStateVerifier = {
     return currentStage;
   },
 
-  userCurrentStageVerificationEx: async function (userId) {
-    const currentStage = await stageModel.getCurrentStage(userId);
+  userCurrentStageVerificationEx: async function (userId, stages) {
+    const currentStage = await stageModel.getCurrentStage(userId, stages);
     if (!currentStage) throw new InvalidStageError("No stages found for the user.");
     return currentStage;
   },
 
   scoreVerification: function (userId, currentStage, currentScore) {
-    // any of the parameters missing
-    // if ((!userId, !currentStage, !currentScore)) {
-    //   throw new Error("Score verification failed.");
-    // }
-
-    // if (typeof currentScore !== "number") throw new Error("Invalid score data type given.");
-
-    // check if user played valid amount of time
     const serverTime = Date.now();
     const elapsedTime = (serverTime - currentStage.timestamp) / 1000;
     const itemScore = getUserItemScore(userId);
@@ -70,33 +68,29 @@ const gameStateVerifier = {
     return currentScore - itemScore;
   },
 
-  itemVerifier: function (itemId) {
+  itemVerification: function (itemId) {
     // if (!itemId) throw new Error("itemId not given.");
     const item = getItemData(itemId);
     if (!item) throw new Error("Item's data doesn't exist.");
     return item;
   },
 
-  userItemUnlockVerification: async function (userId, itemId) {
-    const userStages = await stageModel.getStage(userId);
-    const itemUnlockStage = getItemUnlockStage(itemId);
-    const index = userStages.findIndex((data) => data.id === itemUnlockStage.stage_id);
+  userItemUnlockVerification: async function (userId, item, stages) {
+    const userStages = stages ? stages : await stageModel.getStage(userId);
+    const itemUnlockStage = getItemUnlockStage(item.id);
+    console.log("-=---------------------=");
+    console.log(userStages, itemUnlockStage);
+    console.log("-=---------------------=");
+    const index = userStages.findIndex((data) => data.id === itemUnlockStage.id);
     if (index === -1) throw new Error("Item not unlocked yet.");
     return itemUnlockStage;
   },
 
-  userObtainedItemVerification: async function (userId, itemId) {
-    const item = this.itemVerifier(itemId);
-
-    // find item's unlock stage using getItemUnlockStage(itemId)
-    const unlocksAt = getItemUnlockStageId(item.id);
-    // use getStageRedis(userId) to get user's stages
-    const stages = await stageModel.getStage(userId);
-    // check if the user's stages contain unlock stage
-    const index = stages.findIndex((stage) => stage.id === unlocksAt);
-    if (index === -1) throw new Error("Invalid item acquisition detected.");
-
-    return item;
+  itemIntervalVerificationSync: function (userItem, minInterval) {
+    const elapsedTime = Date.now() - userItem.timestamp;
+    if (elapsedTime < minInterval) {
+      throw new Error("Invalid item acquisition detected.");
+    }
   },
 };
 

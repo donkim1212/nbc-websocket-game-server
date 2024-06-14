@@ -1,28 +1,25 @@
-import { getGameAssets, getItemScore } from "../init/assets.js";
-import { stageModelRedis as stageModel } from "../models/stage.model.js";
-import { addUserItemTotal } from "../models/item.model.js";
+import { getItemScore, getItemMinIntervalByItemId } from "../init/assets.js";
+import { addUserItem, getUserItem } from "../models/item.model.js";
 import gsv from "../libs/game-state-verifier.js";
 
 // Verify item, returns its score
 export const itemScoreHandler = async (userId, payload) => {
   const { itemId } = payload;
-  await gsv.userObtainedItemVerification(userId, itemId);
-  const currentStage = await stageModel.getStage(userId);
-  const gameAssets = getGameAssets();
+  const item = await gsv.itemVerification(itemId);
+  console.log("UserId:::::", userId);
+  const stages = await gsv.stagesVerification(userId);
+  console.log("Stages:::::", stages);
+  const currentStage = await gsv.userCurrentStageVerificationEx(userId, stages);
+  const unlockStage = await gsv.userItemUnlockVerification(userId, item, stages);
   // TODO: abuse detection as an async function?
 
-  const unlocksAt = gameAssets.itemUnlocks.data.findIndex((data) => itemId === data.item_id);
-  if (unlocksAt === -1) {
-    return { status: "fail", message: `Item with itemId ${itemId} doesn't exist` };
-  }
-
-  if (currentStage.id > gameAssets.itemUnlocks.data[unlocksAt].stage_id) {
-    return { status: "fail", message: "Illegal item detected" };
-  }
+  const minInterval = getItemMinIntervalByItemId(itemId);
+  const userItem = getUserItem(userId);
+  gsv.itemIntervalVerificationSync(userItem, minInterval);
 
   const itemScore = getItemScore(itemId);
-  if (itemScore === -1) return { status: "fail", message: "The item is non-existent." };
 
-  addUserItemTotal(userId, itemScore);
+  addUserItem(userId, itemScore);
+
   return { status: "success", message: "Item obtained.", payload: { score: itemScore } };
 };

@@ -8,8 +8,9 @@ export const gameStart = async (uuid, payload) => {
 export const gameEnd = async (userId, payload) => {
   const { score } = payload;
 
+  const stages = await gsv.stagesVerification(userId);
   // verification
-  const currentStage = await gsv.userCurrentStageVerificationEx(userId);
+  const currentStage = await gsv.userCurrentStageVerificationEx(userId, stages);
   const deltaScore = gsv.scoreVerification(userId, currentStage, score);
 
   const ret = { status: "success", message: "Game ended", payload: { score } };

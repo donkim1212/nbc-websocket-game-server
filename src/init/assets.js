@@ -61,6 +61,12 @@ export const getItemUnlockStageId = (itemId) => {
   return getItemUnlockStage(itemId).id;
 };
 
+export const getItemMinIntervalByItemId = (itemId) => {
+  const index = gameAssets.items.data.findIndex((data) => data.id === itemId);
+  if (index === -1) return null;
+  return gameAssets.items.data[index].min_inteval;
+};
+
 export const getUnlockedItemIdByStageId = (stageId) => {
   const itemUnlockIndex = gameAssets.itemUnlocks.data.findIndex(
     (data) => data.stage_id === stageId,
