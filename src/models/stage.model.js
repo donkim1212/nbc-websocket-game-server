@@ -31,8 +31,8 @@ export const stageModelRedis = {
   getStage: async function (userId) {
     return JSON.parse(await redisClient.get("" + userId));
   },
-  getCurrentStage: async function (userId) {
-    const stages = await this.getStage("" + userId);
+  getCurrentStage: async function (userId, paramStages) {
+    const stages = paramStages ? paramStages : await this.getStage("" + userId);
     if (!stages) return null;
     return stages[stages.length - 1];
   },
