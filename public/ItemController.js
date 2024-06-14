@@ -79,12 +79,19 @@ class ItemController {
     this.items.forEach((item) => item.draw());
   }
 
+  getItemScore(itemId) {
+    const item = this.unlockedItems.find((item) => item.id === itemId);
+    if (!item) return 0;
+    return item.score;
+  }
+
   collideWith(sprite) {
     const collidedItem = this.items.find((item) => item.collideWith(sprite));
     if (collidedItem) {
       this.ctx.clearRect(collidedItem.x, collidedItem.y, collidedItem.width, collidedItem.height);
       return {
         itemId: collidedItem.id,
+        score: this.getItemScore(collidedItem.id),
       };
     }
   }
